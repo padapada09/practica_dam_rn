@@ -10,13 +10,8 @@ const styles = StyleSheet.create({
 });
 
 const SeleccionarCategoria = ({producto}) => {
-  const {
-    obtenerCategoriasDelProducto,
-    categorias,
-    agregarProductoACategoria,
-    quitarProductoDeCategoria,
-  } = useContext(StoreContext);
-  const categoriasDelProducto = obtenerCategoriasDelProducto(producto);
+  const context = useContext(StoreContext);
+  const categorias = producto.categorias;
 
   const renderItem = ({item, index}) => {
     const categoria = item;
@@ -34,7 +29,7 @@ const SeleccionarCategoria = ({producto}) => {
       );
     };
 
-    const categoriaAsignada = categoriasDelProducto
+    const categoriaAsignada = categorias
       .map((c) => c.id)
       .includes(categoria.id);
 
@@ -45,9 +40,9 @@ const SeleccionarCategoria = ({producto}) => {
           checked={categoriaAsignada}
           onChange={() => {
             if (!categoriaAsignada) {
-              agregarProductoACategoria(categoria, producto);
+              context.productos.addCategoryToProduct(producto.id,categoria.id);
             } else {
-              quitarProductoDeCategoria(categoria, producto);
+              context.productos.removeCategoryFromProduct(producto.id,categoria.id);
             }
           }}>
           <Text category="s1">
